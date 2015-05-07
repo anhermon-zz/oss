@@ -1,0 +1,146 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+	<head th:fragment="head">
+		<!-- Meta -->
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+			<meta th:name="_csrf" th:content="${_csrf.token}"></meta>
+    		<meta th:name="_csrf_header" th:content="${_csrf.headerName}"></meta>
+     	<!--  CSS  -->
+     		<link rel="stylesheet" href="/css/fonts.css"></link>
+			<link rel="stylesheet" href="/css/normalize.css"></link>
+			<link rel="stylesheet" href="/css/bootstrap.min.css"></link>
+			<link rel="stylesheet" href="/css/bootstrap-responsive.min.css"></link>
+			<link rel="stylesheet" href="/css/bootstrap-theme.min.css"></link>
+			<link rel="stylesheet" href="/css/main.css"></link>
+		<!-- Javascript -->
+			<script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+			<script src="/js/vendor/jquery-1.11.2.min.js"></script>		
+			<script src="/js/vendor/jquery.easing.min.js"></script>
+			<script src="/js/vendor/jquery.animate-enhanced.min.js"></script>
+			<script src="/js/vendor/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
+		
+			<script src="/js/bootstrap.min.js"></script>
+		
+			<script src="/js/vendor/angular.min.js"></script>
+			<script src="/js/vendor/angular-ui-router.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min.js"></script>
+			<script src="/js/angular/services/utilities.js"></script>
+			<script src="/js/angular/services/dataService.js"></script>
+			<script src="/js/angular/controller.js"></script>
+			<script src="/js/angular/directives/fileread.js"></script>
+			<script src="/js/angular/app.js"></script>
+			<script src="/js/main.js"></script>
+    </head>
+    
+    <div th:fragment="header" class="col-md-12 header"></div>
+    
+    <nav th:fragment="nav" class="navbar-default">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="#">Brand</a>
+		    </div>
+		
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#">Home <span class="sr-only"></span></a></li>
+		        <li><a href="#">Articles</a></li>
+		        <li><a href="#">About us</a></li>
+		      </ul>
+		      
+              <div sec:authorize="isAnonymous()">
+               		<div th:replace="fragments :: login"></div>
+               </div>
+              <div sec:authorize="isAuthenticated()">
+               		<div th:replace="fragments :: userControls"></div>
+              </div>
+              
+		      <!-- 
+		      <form class="navbar-form navbar-left" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control" placeholder="Search"></input>
+		        </div>
+		        <button type="submit" class="btn btn-default">Submit</button>
+		      </form>
+		       -->
+		    </div>
+		  </div>
+		</nav>
+	
+	
+    <div th:fragment="search" id="sb-search" class="sb-search">
+		<form>
+			<input class="sb-search-input" placeholder="Search..." type="text" value="" name="search" id="search"></input>
+			<input class="sb-search-submit" type="submit" value=""></input>
+			<i class="fa fa-search sb-icon-search"></i>
+		</form>
+	</div>
+	
+	<form  th:fragment="login" name="login" th:action="@{/auth/login}" method="POST" class="navbar-form navbar-right">               	    
+		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></input>
+			<div class="form-group">
+				<input type="text" name="username" class="form-control" id="username" placeholder="User name"></input>
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" class="form-control" id="password" placeholder="Password"></input>
+			</div>
+			<div class="form-group">
+				<input class="btn btn-info" name="submit" type="submit" value="Login"></input>
+			</div>
+			<div class="form-group">
+				<a class="btn btn-info" ui-sref="registration">Register</a>
+			</div>
+	</form>
+	
+	<form  th:fragment="regisration" name="register" class="">
+			<h1>Register</h1>             	    
+			<div class="form-group">
+				<input type="text" ng-model="rc.user.username" name="username" class="form-control" id="username" placeholder="User name"></input>
+			</div>
+			<div class="form-group">
+				<input type="email" ng-model="rc.user.email" name="email" class="form-control" id="email" placeholder="email"></input>
+			</div>
+			<div class="form-group">
+				<input type="password" ng-model="rc.user.password" name="password" class="form-control" id="password" placeholder="Password"></input>
+			</div>
+			<div class="form-group">
+				<input type="password" ng-model="rc.user.passwordRe" name="passwordRe" class="form-control" id="passwordRe" placeholder="Re-enter password"></input>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-success" ng-click="rc.submit()">Sign Up</button>
+				<button class="btn btn-info" ng-click="rc.test()">Test</button>
+			</div>
+	</form>
+	
+	 <div th:fragment="userControls" class="dropdown navbar-right" style="margin-bottom:8px;margin-top:8px">
+        <button class="btn btn-info dropdown-toggle" type="button" id="user-dropdown" data-toggle="dropdown">
+        	<span sec:authentication="name">username</span>
+        	<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+          <li role="presentation"><a role="menuitem" tabindex="-1" ui-sref="profile">Profile</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" ui-sref="#">My properties</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout">Logout</a></li>
+          <li sec:authorize = "hasRole('ADMIN')" role="presentation"><a role="menuitem" tabindex="-1" ui-sref="#">Manage articles</a></li>
+        </ul>
+ </div>
+	
+	
+	<div th:fragment="403">
+		<h1>Access denied!</h1>
+		<p>Sorry, you do not have the correct provilage to access this page.</p>
+	</div>
+	
+	<div th:fragment="404">
+		<h1>Page Not Found</h1>
+		<p>Sorry, but the page you were trying to view does not exist.</p>
+	</div>
+	
+</html>

@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" ng-app="ossApp" ng-cloak=""
+	class="ng-cloak">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+	<div th:replace="fragments :: header"></div>
+	<div th:replace="fragments :: nav"></div>
+	<div class="container" ui-view="">
+		<div ng-controller="RegistrationCtrl as rc">
+			<div class="panel panel-default myClass" ng-repeat="t in rc.example">
+				<div class="panel-body"><label>User:</label>{{t.user}}</div>
+				<div class="panel-footer"><label>Password:</label>{{t.Password}}</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
